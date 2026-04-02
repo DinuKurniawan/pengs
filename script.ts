@@ -4,15 +4,7 @@ const navMenu = document.querySelector('.nav-menu') as HTMLUListElement;
 
 if (mobileMenuToggle && navMenu) {
     mobileMenuToggle.addEventListener('click', () => {
-        navMenu.style.display = navMenu.style.display === 'flex' ? 'none' : 'flex';
-        navMenu.style.flexDirection = 'column';
-        navMenu.style.position = 'absolute';
-        navMenu.style.top = '100%';
-        navMenu.style.left = '0';
-        navMenu.style.right = '0';
-        navMenu.style.background = '#fff';
-        navMenu.style.padding = '1rem';
-        navMenu.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)';
+        navMenu.classList.toggle('mobile-open');
     });
 }
 
@@ -74,12 +66,6 @@ const loadHomepageAdminData = (): HomepageAdminData | null => {
     } catch {
         return null;
     }
-};
-
-const getWhatsappNumberFromAdmin = (): string => {
-    const data = loadHomepageAdminData();
-    const wa = data?.contact?.whatsapp?.trim();
-    return wa && wa.length > 0 ? wa : '6285894330641';
 };
 
 const renderCarouselFromAdmin = (data: HomepageAdminData): void => {
@@ -544,7 +530,7 @@ navLinks.forEach(link => {
                 
                 // Close mobile menu if open
                 if (window.innerWidth <= 768 && navMenu) {
-                    navMenu.style.display = 'none';
+                    navMenu.classList.remove('mobile-open');
                 }
             }
         }
@@ -567,34 +553,6 @@ window.addEventListener('scroll', () => {
     
     lastScroll = currentScroll;
 });
-
-// Form submission handler
-const contactForm = document.getElementById('contactForm') as HTMLFormElement;
-
-if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        const name = (document.getElementById('contactName') as HTMLInputElement | null)?.value.trim() || '';
-        const phone = (document.getElementById('contactPhone') as HTMLInputElement | null)?.value.trim() || '';
-        const email = (document.getElementById('contactUserEmail') as HTMLInputElement | null)?.value.trim() || '';
-        const service = (document.getElementById('contactService') as HTMLSelectElement | null)?.value.trim() || '';
-        const message = (document.getElementById('contactMessage') as HTMLTextAreaElement | null)?.value.trim() || '';
-
-        const waNumber = getWhatsappNumberFromAdmin();
-        const waText =
-            `Halo GePeng Motor,%0A` +
-            `Saya ingin booking service.%0A%0A` +
-            `Nama: ${encodeURIComponent(name)}%0A` +
-            `No HP: ${encodeURIComponent(phone)}%0A` +
-            `Email: ${encodeURIComponent(email)}%0A` +
-            `Layanan: ${encodeURIComponent(service)}%0A` +
-            `Pesan: ${encodeURIComponent(message)}`;
-
-        window.open(`https://wa.me/${waNumber}?text=${waText}`, '_blank');
-        contactForm.reset();
-    });
-}
 
 // Intersection Observer for animation on scroll
 const observerOptions = {
@@ -668,7 +626,7 @@ statNumbers.forEach(stat => statsObserver.observe(stat));
 document.addEventListener('click', (e) => {
     const target = e.target as HTMLElement;
     if (window.innerWidth <= 768 && navMenu && !navMenu.contains(target) && !mobileMenuToggle?.contains(target)) {
-        navMenu.style.display = 'none';
+        navMenu.classList.remove('mobile-open');
     }
 });
 

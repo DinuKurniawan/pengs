@@ -4,15 +4,7 @@ const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
 const navMenu = document.querySelector('.nav-menu');
 if (mobileMenuToggle && navMenu) {
     mobileMenuToggle.addEventListener('click', () => {
-        navMenu.style.display = navMenu.style.display === 'flex' ? 'none' : 'flex';
-        navMenu.style.flexDirection = 'column';
-        navMenu.style.position = 'absolute';
-        navMenu.style.top = '100%';
-        navMenu.style.left = '0';
-        navMenu.style.right = '0';
-        navMenu.style.background = '#fff';
-        navMenu.style.padding = '1rem';
-        navMenu.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)';
+        navMenu.classList.toggle('mobile-open');
     });
 }
 const ADMIN_STORAGE_KEY = 'gepeng_admin_data';
@@ -32,12 +24,6 @@ const loadHomepageAdminData = () => {
     catch (_a) {
         return null;
     }
-};
-const getWhatsappNumberFromAdmin = () => {
-    var _a, _b;
-    const data = loadHomepageAdminData();
-    const wa = (_b = (_a = data === null || data === void 0 ? void 0 : data.contact) === null || _a === void 0 ? void 0 : _a.whatsapp) === null || _b === void 0 ? void 0 : _b.trim();
-    return wa && wa.length > 0 ? wa : '6285894330641';
 };
 const renderCarouselFromAdmin = (data) => {
     if (!data.carousel || data.carousel.length === 0)
@@ -445,7 +431,7 @@ navLinks.forEach(link => {
                 targetElement.scrollIntoView({ behavior: 'smooth' });
                 // Close mobile menu if open
                 if (window.innerWidth <= 768 && navMenu) {
-                    navMenu.style.display = 'none';
+                    navMenu.classList.remove('mobile-open');
                 }
             }
         }
@@ -465,29 +451,6 @@ window.addEventListener('scroll', () => {
     }
     lastScroll = currentScroll;
 });
-// Form submission handler
-const contactForm = document.getElementById('contactForm');
-if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
-        var _a, _b, _c, _d, _e;
-        e.preventDefault();
-        const name = ((_a = document.getElementById('contactName')) === null || _a === void 0 ? void 0 : _a.value.trim()) || '';
-        const phone = ((_b = document.getElementById('contactPhone')) === null || _b === void 0 ? void 0 : _b.value.trim()) || '';
-        const email = ((_c = document.getElementById('contactUserEmail')) === null || _c === void 0 ? void 0 : _c.value.trim()) || '';
-        const service = ((_d = document.getElementById('contactService')) === null || _d === void 0 ? void 0 : _d.value.trim()) || '';
-        const message = ((_e = document.getElementById('contactMessage')) === null || _e === void 0 ? void 0 : _e.value.trim()) || '';
-        const waNumber = getWhatsappNumberFromAdmin();
-        const waText = `Halo GePeng Motor,%0A` +
-            `Saya ingin booking service.%0A%0A` +
-            `Nama: ${encodeURIComponent(name)}%0A` +
-            `No HP: ${encodeURIComponent(phone)}%0A` +
-            `Email: ${encodeURIComponent(email)}%0A` +
-            `Layanan: ${encodeURIComponent(service)}%0A` +
-            `Pesan: ${encodeURIComponent(message)}`;
-        window.open(`https://wa.me/${waNumber}?text=${waText}`, '_blank');
-        contactForm.reset();
-    });
-}
 // Intersection Observer for animation on scroll
 const observerOptions = {
     threshold: 0.1,
@@ -547,7 +510,7 @@ statNumbers.forEach(stat => statsObserver.observe(stat));
 document.addEventListener('click', (e) => {
     const target = e.target;
     if (window.innerWidth <= 768 && navMenu && !navMenu.contains(target) && !(mobileMenuToggle === null || mobileMenuToggle === void 0 ? void 0 : mobileMenuToggle.contains(target))) {
-        navMenu.style.display = 'none';
+        navMenu.classList.remove('mobile-open');
     }
 });
 console.log('GePeng Motor Service - Website loaded successfully! 🏍️');

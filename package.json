@@ -1,0 +1,21 @@
+{
+  "name": "gepeng",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc script.ts admin.ts --target ES6 --lib ES2019,DOM",
+    "build:script": "tsc script.ts --target ES6 --lib ES2019,DOM",
+    "build:admin": "tsc admin.ts --target ES6 --lib ES2019,DOM",
+    "dev": "npx live-server --port=3000 --open=/index.html",
+    "admin": "npx live-server --port=3001 --open=/admin.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "typescript": "^6.0.2"
+  }
+}
